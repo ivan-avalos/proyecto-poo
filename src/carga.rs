@@ -3,13 +3,6 @@ use std::fs::File;
 use std::io;
 use std::io::Write;
 
-// Util functions
-pub const RL_ERROR: &'static str = "Error al leer línea.";
-pub fn p_flush(s: &'static str) {
-    print!("{}", s);
-    io::stdout().flush().expect("No se pudo enjuagar stdout");
-}
-
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct AlumnoMateria {
     pub num_control: String,
@@ -27,14 +20,18 @@ impl AlumnoMateria {
     pub fn new_from_stdin() -> AlumnoMateria {
         println!("Introducir datos de enrolamiento:");
 
-        p_flush("Número de control: ");
+        super::utils::p_flush("Número de control: ");
         let mut num_control = String::new();
-        io::stdin().read_line(&mut num_control).expect(RL_ERROR);
+        io::stdin()
+            .read_line(&mut num_control)
+            .expect(super::utils::RL_ERROR);
         num_control.pop();
 
-        p_flush("Clave de materia: ");
+        super::utils::p_flush("Clave de materia: ");
         let mut clave_materia = String::new();
-        io::stdin().read_line(&mut clave_materia).expect(RL_ERROR);
+        io::stdin()
+            .read_line(&mut clave_materia)
+            .expect(super::utils::RL_ERROR);
         clave_materia.pop();
 
         AlumnoMateria::new(num_control.trim().into(), clave_materia.trim().into())
@@ -121,9 +118,11 @@ impl Carga {
     }
 
     pub fn print_from_stdin(&self, materias: super::materia::Materias) {
-        p_flush("Número de control del alumno: ");
+        super::utils::p_flush("Número de control del alumno: ");
         let mut num_control = String::new();
-        io::stdin().read_line(&mut num_control).expect(RL_ERROR);
+        io::stdin()
+            .read_line(&mut num_control)
+            .expect(super::utils::RL_ERROR);
         self.print_for_alumno(num_control.trim().into(), materias);
     }
 
@@ -153,10 +152,10 @@ impl Carga {
             Err(_) => return,
         };
         output.push_str(&*format!("{}\n", table.to_string()));
-        
-        let mut file = File::create (output_path)
-            .expect("[!] No se pudo abrir/crear el archivo.");
-        file.write(output.as_bytes()).expect("[!] No se pudo escribir al archivo.");
+
+        let mut file = File::create(output_path).expect("[!] No se pudo abrir/crear el archivo.");
+        file.write(output.as_bytes())
+            .expect("[!] No se pudo escribir al archivo.");
     }
 
     pub fn export_carga_from_stdin(
@@ -164,9 +163,11 @@ impl Carga {
         alumnos: super::alumno::Alumnos,
         materias: super::materia::Materias,
     ) {
-        p_flush("Número de control del alumno: ");
+        super::utils::p_flush("Número de control del alumno: ");
         let mut num_control = String::new();
-        io::stdin().read_line(&mut num_control).expect(RL_ERROR);
+        io::stdin()
+            .read_line(&mut num_control)
+            .expect(super::utils::RL_ERROR);
         let num_control: String = num_control.trim().into();
         let output_path = format!("carga_{}.txt", num_control);
 

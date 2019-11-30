@@ -1,12 +1,14 @@
 mod alumno;
 mod carga;
 mod materia;
+mod utils;
 use std::error::Error;
 use std::fs::File;
 use std::io;
 use std::path::Path;
 
-#[macro_use] extern crate prettytable;
+#[macro_use]
+extern crate prettytable;
 use prettytable::Table;
 
 fn existing_warn(filename: &'static str) {

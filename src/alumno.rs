@@ -1,13 +1,5 @@
 use serde::{Deserialize, Serialize};
 use std::io;
-use std::io::Write;
-
-// Util functions
-pub const RL_ERROR: &'static str = "Error al leer línea.";
-pub fn p_flush(s: &'static str) {
-    print!("{}", s);
-    io::stdout().flush().expect("No se pudo enjuagar stdout");
-}
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Alumno {
@@ -29,19 +21,25 @@ impl Alumno {
         loop {
             println!("Introducir datos del alumno:");
 
-            p_flush("Número de control: ");
+            super::utils::p_flush("Número de control: ");
             let mut num_control = String::new();
-            io::stdin().read_line(&mut num_control).expect(RL_ERROR);
+            io::stdin()
+                .read_line(&mut num_control)
+                .expect(super::utils::RL_ERROR);
             num_control.pop();
 
-            p_flush("Nombre: ");
+            super::utils::p_flush("Nombre: ");
             let mut nombre = String::new();
-            io::stdin().read_line(&mut nombre).expect(RL_ERROR);
+            io::stdin()
+                .read_line(&mut nombre)
+                .expect(super::utils::RL_ERROR);
             nombre.pop();
 
-            p_flush("Semestre: ");
+            super::utils::p_flush("Semestre: ");
             let mut semestre = String::new();
-            io::stdin().read_line(&mut semestre).expect(RL_ERROR);
+            io::stdin()
+                .read_line(&mut semestre)
+                .expect(super::utils::RL_ERROR);
             let semestre: u8 = match semestre.trim().parse() {
                 Ok(num) => num,
                 Err(_) => continue,
