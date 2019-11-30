@@ -1,8 +1,9 @@
 [package]
 name = "poo"
 version = "0.1.0"
-authors = ["avalos <ivan.avalos.diaz@hotmail.com>"]
+authors = ["Iván Ávalos <ivan.avalos.diaz@hotmail.com>"]
 edition = "2018"
+license = "GNU GPLv3"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
