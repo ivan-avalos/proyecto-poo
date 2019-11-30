@@ -1,0 +1,12 @@
+[package]
+name = "poo"
+version = "0.1.0"
+authors = ["avalos <ivan.avalos.diaz@hotmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_cbor = "0.10.2"
+prettytable-rs = "^0.8"
