@@ -49,6 +49,37 @@ impl Alumno {
         }
     }
 
+    pub fn edit (&mut self, nombre: String, semestre: u8) {
+        self.nombre = nombre;
+        self.semestre = semestre;
+    }
+
+    pub fn edit_from_stdin (&mut self) {
+        loop {
+            println!("Introducir nuevos datos del alumno:");
+
+            super::utils::p_flush("Nombre: ");
+            let mut nombre = String::new();
+            io::stdin()
+                .read_line(&mut nombre)
+                .expect(super::utils::RL_ERROR);
+            nombre.pop();
+
+            super::utils::p_flush("Semestre: ");
+            let mut semestre = String::new();
+            io::stdin()
+                .read_line(&mut semestre)
+                .expect(super::utils::RL_ERROR);
+            let semestre: u8 = match semestre.trim().parse() {
+                Ok(num) => num,
+                Err(_) => continue,
+            };
+
+            self.edit(nombre, semestre);
+            break;
+        }
+    }
+
     pub fn print(&self) {
         println!("Alumno:");
         println!("  – Número de control: {}", self.num_control);
@@ -76,6 +107,36 @@ impl Alumnos {
     pub fn push_from_stdin(&mut self) {
         let alumno = Alumno::new_from_stdin();
         self.push(alumno);
+    }
+
+    pub fn edit_from_stdin (&mut self) {
+        loop {
+            super::utils::p_flush("Número de control: ");
+            let mut num_control = String::new();
+            io::stdin()
+                .read_line(&mut num_control)
+                .expect(super::utils::RL_ERROR);
+            num_control.pop();
+
+            match self.alumnos.clone()
+                .into_iter()
+                .find(|x| x.num_control == num_control) {
+                    Some(_) => {},
+                    None => {
+                        println!("[!] El alumno {} no existe.", num_control);
+                        continue;
+                    
+                }
+            }
+
+            for alumno in &mut self.alumnos {
+                if alumno.num_control == num_control {
+                    alumno.edit_from_stdin();
+                    break;
+                }
+            }
+            break;
+        }
     }
 
     pub fn print(&self) {

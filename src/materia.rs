@@ -49,6 +49,37 @@ impl Materia {
         };
     }
 
+    pub fn edit (&mut self, nombre: String, creditos: u8) {
+        self.nombre = nombre;
+        self.creditos = creditos;
+    }
+
+    pub fn edit_from_stdin (&mut self) {
+        return loop {
+            println!("Introducir datos de la materia:");
+
+            super::utils::p_flush("Nombre: ");
+            let mut nombre = String::new();
+            io::stdin()
+                .read_line(&mut nombre)
+                .expect(super::utils::RL_ERROR);
+            nombre.pop();
+
+            super::utils::p_flush("Créditos: ");
+            let mut creditos = String::new();
+            io::stdin()
+                .read_line(&mut creditos)
+                .expect(super::utils::RL_ERROR);
+            let creditos: u8 = match creditos.trim().parse() {
+                Ok(num) => num,
+                Err(_) => continue,
+            };
+            
+            self.edit(nombre, creditos);
+            break;
+        };
+    }
+
     pub fn print(&self) {
         println!("Materia:");
         println!("  – Clave: {}", self.clave);
@@ -76,6 +107,34 @@ impl Materias {
     pub fn push_from_stdin(&mut self) {
         let materia = Materia::new_from_stdin();
         self.push(materia);
+    }
+
+    pub fn edit_from_stdin(&mut self) {
+        loop {
+            super::utils::p_flush("Número de control: ");
+            let mut clave = String::new();
+            io::stdin().read_line(&mut clave)
+                .expect(super::utils::RL_ERROR);
+            clave.pop();
+
+            match self.materias.clone()
+                .into_iter()
+                .find(|x| x.clave == clave) {
+                    Some(_) => {},
+                    None => {
+                        println!("[!] La materia {} no existe", clave);
+                        continue;
+                    }
+                }
+            
+            for materia in &mut self.materias {
+                if materia.clave == clave {
+                    materia.edit_from_stdin();
+                    break;
+                }
+            }
+            break;
+        }
     }
 
     pub fn print(&self) {

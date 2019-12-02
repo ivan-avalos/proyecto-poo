@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io;
 use std::io::Write;
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct AlumnoMateria {
     pub num_control: String,
     pub clave_materia: String,
@@ -17,24 +17,48 @@ impl AlumnoMateria {
         }
     }
 
-    pub fn new_from_stdin() -> AlumnoMateria {
-        println!("Introducir datos de enrolamiento:");
+    pub fn new_from_stdin(alumnos: super::alumno::Alumnos, materias: super::materia::Materias) -> AlumnoMateria {
+        loop {
+            println!("Introducir datos de enrolamiento:");
 
-        super::utils::p_flush("Número de control: ");
-        let mut num_control = String::new();
-        io::stdin()
-            .read_line(&mut num_control)
-            .expect(super::utils::RL_ERROR);
-        num_control.pop();
+            super::utils::p_flush("Número de control: ");
+            let mut num_control = String::new();
+            io::stdin()
+                .read_line(&mut num_control)
+                .expect(super::utils::RL_ERROR);
+            num_control.pop();
+            
+            // Check num_control
+            match alumnos.alumnos.clone()
+                .into_iter()
+                .find(|x| x.num_control == num_control) {
+                    Some(_) => {},
+                    None => {
+                        println!("[!] El alumno {} no existe.", num_control);
+                        continue;
+                    }
+                }
 
-        super::utils::p_flush("Clave de materia: ");
-        let mut clave_materia = String::new();
-        io::stdin()
-            .read_line(&mut clave_materia)
-            .expect(super::utils::RL_ERROR);
-        clave_materia.pop();
+            super::utils::p_flush("Clave de materia: ");
+            let mut clave_materia = String::new();
+            io::stdin()
+                .read_line(&mut clave_materia)
+                .expect(super::utils::RL_ERROR);
+            clave_materia.pop();
 
-        AlumnoMateria::new(num_control.trim().into(), clave_materia.trim().into())
+            // Check clave_materia
+            match materias.materias.clone()
+                .into_iter()
+                .find(|x| x.clave == clave_materia) {
+                    Some(_) => {},
+                    None => {
+                        println!("[!] La materia {} no existe.", clave_materia);
+                        continue;
+                    }
+                }
+
+            break AlumnoMateria::new(num_control.trim().into(), clave_materia.trim().into());
+        }
     }
 }
 
@@ -54,9 +78,10 @@ impl Carga {
         self.relaciones.push(relacion);
     }
 
-    pub fn push_from_stdin(&mut self) {
-        let relacion = AlumnoMateria::new_from_stdin();
+    pub fn push_from_stdin(&mut self, alumnos: super::alumno::Alumnos, materias: super::materia::Materias) {
+        let relacion = AlumnoMateria::new_from_stdin(alumnos, materias);
         self.push(relacion);
+        self.relaciones.dedup();
     }
 
     pub fn get_for_alumno(

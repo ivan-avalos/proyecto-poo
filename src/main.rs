@@ -57,15 +57,17 @@ fn main() -> Result<(), Box<dyn Error>> {
     loop {
         println!(
             "Menú:
-    1. Mostrar alumnos.
-    2. Añadir alumno.
-    3. Mostrar materias.
-    4. Añadir materia.
-    5. Mostrar carga académica de alumno.
-    6. Enrolar alumno a materia.
-    7. Exportar carga académica a archivo.
-    8. Salir sin guardar.
-    9. Guardar y salir.
+    1.  Mostrar alumnos.
+    2.  Añadir alumno.
+    3.  Modificar alumno.
+    4.  Mostrar materias.
+    5.  Añadir materia.
+    6.  Modificar materia.
+    7.  Mostrar carga académica de alumno.
+    8.  Enrolar alumno a materia.
+    9.  Exportar carga académica a archivo.
+    10. Salir sin guardar.
+    11. Guardar y salir.
 Opción: "
         );
 
@@ -86,19 +88,24 @@ Opción: "
             1 => alumnos.print(),
             // Añadir alumno
             2 => alumnos.push_from_stdin(),
+            // Modificar alumno
+            3 => alumnos.edit_from_stdin(),
             // Mostrar materias
-            3 => materias.print(),
+            4 => materias.print(),
             // Añadir materia
-            4 => materias.push_from_stdin(),
+            5 => materias.push_from_stdin(),
+            // Modificar materia
+            6 => materias.edit_from_stdin(),
             // Mostrar carga académica de alumno.
-            5 => carga.print_from_stdin(materias.clone()),
+            7 => carga.print_from_stdin(materias.clone()),
             // Enrolar alumno a materia
-            6 => carga.push_from_stdin(),
-            7 => carga.export_carga_from_stdin(alumnos.clone(), materias.clone()),
+            8 => carga.push_from_stdin(alumnos.clone(), materias.clone()),
+            // Exportar carga a txt
+            9 => carga.export_carga_from_stdin(alumnos.clone(), materias.clone()),
             // Salir sin guardar
-            8 => return Ok(()),
+            10 => return Ok(()),
             // Guardar y salir
-            9 => {
+            11 => {
                 let alumnos_output_file = File::create(data_files.alumnos)?;
                 let materias_output_file = File::create(data_files.materias)?;
                 let carga_output_file = File::create(data_files.carga)?;
