@@ -106,12 +106,20 @@ impl Materias {
 
     pub fn push_from_stdin(&mut self) {
         let materia = Materia::new_from_stdin();
-        self.push(materia);
+        match self.materias.clone().into_iter()
+            .find(|x| x.clave == materia.clave) {
+                Some(_) => {
+                    println!("[!] La materia {} ya existe.", materia.clave);
+                },
+                None => {
+                    self.push(materia);
+                }
+            }
     }
 
     pub fn edit_from_stdin(&mut self) {
         loop {
-            super::utils::p_flush("Número de control: ");
+            super::utils::p_flush("Clave: ");
             let mut clave = String::new();
             io::stdin().read_line(&mut clave)
                 .expect(super::utils::RL_ERROR);

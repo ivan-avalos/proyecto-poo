@@ -106,7 +106,15 @@ impl Alumnos {
 
     pub fn push_from_stdin(&mut self) {
         let alumno = Alumno::new_from_stdin();
-        self.push(alumno);
+        match self.alumnos.clone().into_iter()
+                .find(|x| x.num_control == alumno.num_control) {
+                    Some(_) => {
+                        println!("[!] El alumno {} ya existe.", alumno.num_control);
+                    },
+                    None => {
+                        self.push(alumno);
+                    }
+                }
     }
 
     pub fn edit_from_stdin (&mut self) {

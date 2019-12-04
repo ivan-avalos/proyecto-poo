@@ -57,19 +57,23 @@ fn main() -> Result<(), Box<dyn Error>> {
     loop {
         utils::p_flush(
             "Menú:
-    1.  Mostrar alumnos.
-    2.  Buscar alumno.
-    3.  Añadir alumno.
-    4.  Modificar alumno.
-    5.  Mostrar materias.
-    6.  Buscar materia.
-    7.  Añadir materia.
-    8.  Modificar materia.
-    9.  Mostrar carga académica de alumno.
-    10. Enrolar alumno a materia.
-    11. Exportar carga académica a archivo.
-    12. Salir sin guardar.
-    13. Guardar y salir.
+    Alumnos:
+      1.  Mostrar alumnos.
+      2.  Buscar alumno.
+      3.  Añadir alumno.
+      4.  Modificar alumno.
+    Materias:
+      5.  Mostrar materias.
+      6.  Buscar materia.
+      7.  Añadir materia.
+      8.  Modificar materia.
+    Carga académica:
+      9.  Mostrar carga académica de alumno.
+      10. Enrolar alumno a materia.
+      11. Exportar carga académica a archivo.
+    Archivo:
+      12. Salir sin guardar.
+      13. Guardar y salir.
 ? "
         );
 
@@ -81,7 +85,10 @@ fn main() -> Result<(), Box<dyn Error>> {
 
         let opcion: u32 = match opcion.trim().parse() {
             Ok(num) => num,
-            Err(_) => continue,
+            Err(_) => {
+                println!("[!] Opción inválida.");
+                continue
+            },
         };
 
         // Ejecutar acción correspondiente
@@ -123,9 +130,9 @@ fn main() -> Result<(), Box<dyn Error>> {
                 println!("[!] Se han guardado los datos.");
                 return Ok(());
             }
-            _ => break,
+            _ => {
+                println!("[!] Opción inválida.")
+            },
         }
     }
-
-    Ok(())
 }
