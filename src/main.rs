@@ -55,20 +55,22 @@ fn main() -> Result<(), Box<dyn Error>> {
     };
 
     loop {
-        println!(
+        utils::p_flush(
             "Menú:
     1.  Mostrar alumnos.
-    2.  Añadir alumno.
-    3.  Modificar alumno.
-    4.  Mostrar materias.
-    5.  Añadir materia.
-    6.  Modificar materia.
-    7.  Mostrar carga académica de alumno.
-    8.  Enrolar alumno a materia.
-    9.  Exportar carga académica a archivo.
-    10. Salir sin guardar.
-    11. Guardar y salir.
-Opción: "
+    2.  Buscar alumno.
+    3.  Añadir alumno.
+    4.  Modificar alumno.
+    5.  Mostrar materias.
+    6.  Buscar materia.
+    7.  Añadir materia.
+    8.  Modificar materia.
+    9.  Mostrar carga académica de alumno.
+    10. Enrolar alumno a materia.
+    11. Exportar carga académica a archivo.
+    12. Salir sin guardar.
+    13. Guardar y salir.
+? "
         );
 
         // Leer opción de stdin
@@ -86,26 +88,30 @@ Opción: "
         match opcion {
             // Mostrar alumnos
             1 => alumnos.print(),
+            // Buscar alumno
+            2 => alumnos.search_print_from_stdin(),
             // Añadir alumno
-            2 => alumnos.push_from_stdin(),
+            3 => alumnos.push_from_stdin(),
             // Modificar alumno
-            3 => alumnos.edit_from_stdin(),
+            4 => alumnos.edit_from_stdin(),
             // Mostrar materias
-            4 => materias.print(),
+            5 => materias.print(),
+            // Buscar materia
+            6 => materias.search_print_from_stdin(),
             // Añadir materia
-            5 => materias.push_from_stdin(),
+            7 => materias.push_from_stdin(),
             // Modificar materia
-            6 => materias.edit_from_stdin(),
+            8 => materias.edit_from_stdin(),
             // Mostrar carga académica de alumno.
-            7 => carga.print_from_stdin(materias.clone()),
+            9 => carga.print_from_stdin(materias.clone()),
             // Enrolar alumno a materia
-            8 => carga.push_from_stdin(alumnos.clone(), materias.clone()),
+            10 => carga.push_from_stdin(alumnos.clone(), materias.clone()),
             // Exportar carga a txt
-            9 => carga.export_carga_from_stdin(alumnos.clone(), materias.clone()),
+            11 => carga.export_carga_from_stdin(alumnos.clone(), materias.clone()),
             // Salir sin guardar
-            10 => return Ok(()),
+            12 => return Ok(()),
             // Guardar y salir
-            11 => {
+            13 => {
                 let alumnos_output_file = File::create(data_files.alumnos)?;
                 let materias_output_file = File::create(data_files.materias)?;
                 let carga_output_file = File::create(data_files.carga)?;

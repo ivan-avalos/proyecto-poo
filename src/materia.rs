@@ -142,6 +142,29 @@ impl Materias {
             materia.print();
         }
     }
+
+    pub fn search_print (&self, clave: String) {
+        match self.materias.clone().into_iter()
+            .find(|x| x.clave == clave) {
+                Some(materia) => {
+                    materia.print();
+                },
+                None => {
+                    println!("[!] La materia {} no existe.", clave);
+                }
+            }
+    }
+
+    pub fn search_print_from_stdin (&self) {
+        super::utils::p_flush("Clave: ");
+        let mut clave = String::new();
+        io::stdin()
+            .read_line(&mut clave)
+            .expect(super::utils::RL_ERROR);
+        clave.pop();
+
+        self.search_print (clave);
+    }
 }
 
 impl Extend<Materia> for Materias {

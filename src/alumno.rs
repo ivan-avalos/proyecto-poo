@@ -144,6 +144,29 @@ impl Alumnos {
             alumno.print();
         }
     }
+
+    pub fn search_print (&self, num_control: String) {
+        match self.alumnos.clone().into_iter()
+            .find(|x| x.num_control == num_control) {
+                Some(alumno) => {
+                    alumno.print();
+                },
+                None => {
+                    println!("[!] El alumno {} no existe.", num_control);
+                }
+            }
+    }
+
+    pub fn search_print_from_stdin (&self) {
+        super::utils::p_flush("Número de control: ");
+        let mut clave = String::new();
+        io::stdin()
+            .read_line(&mut clave)
+            .expect(super::utils::RL_ERROR);
+        clave.pop();
+
+        self.search_print (clave);
+    }
 }
 
 impl Extend<Alumno> for Alumnos {
